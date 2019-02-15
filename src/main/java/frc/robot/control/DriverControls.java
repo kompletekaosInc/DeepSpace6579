@@ -24,4 +24,21 @@ public class DriverControls extends PSController {
 
     }
 
+    /**
+     * This controls the robot and should only be used during TeleOp
+     * @param robot
+     */
+    @Override
+    public void giveCommands(Robot robot) {
+        super.giveCommands(robot);
+
+        arcadeDrive(robot);
+
+    }
+
+    @Override
+    protected void processSquare(Robot robot) {
+        //super.processSquare(robot);
+        
+    }
 }
