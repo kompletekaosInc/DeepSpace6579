@@ -7,12 +7,12 @@
 
 package frc.robot;
 
-import com.revrobotics.CANEncoder;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.subsystems.*;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,83 +22,45 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
  * directory.
  */
 public class Robot extends TimedRobot {
-  private DifferentialDrive robotDrive = null;
-  private final Joystick stick = new Joystick(0);
-  private final Timer timer = new Timer();
 
-  private VictorSP intake;
-  //private VictorSP lift;
-  private VictorSP intakePivot;
-  private VictorSP carriageFlywheel;
+  //all the subsystems
+  private Drivetrain drivetrain;
+  private Lift lift;
+  private Intake intake;
+  private Carriage carriage;
+  private Hatch hatch;
 
-  private CANSparkMax spark7;
-  private CANSparkMax spark8;
-
-  private SpeedControllerGroup lift = null;
-
-  private VictorSP leftDrive1 = null;
-  private VictorSP leftDrive2 = null;
-
-  private SpeedControllerGroup leftTB = null;
-
-  private VictorSP rightDrive1 = null;
-  private VictorSP rightDrive2 = null;
-
-  private SpeedControllerGroup rightTB = null;
-
-  private CANEncoder encoderSPARK;
+  //creating a list of all the subsystems
+  private List subSystems = new ArrayList();
 
 
 
-//  DoubleSolenoid hatch = new DoubleSolenoid(0, 1);
-//  DoubleSolenoid carriage = new DoubleSolenoid(2, 3);
-  /**
+/**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
+
     try{
-    intake = new VictorSP(4);
-    //lift = new VictorSP(2);
-    intakePivot = new VictorSP(6);
-    carriageFlywheel = new VictorSP(5);
+      drivetrain = new Drivetrain();
+      lift = new Lift();
+      intake = new Intake();
+      carriage = new Carriage();
+      hatch = new Hatch();
 
-    
-    spark8 = new CANSparkMax(8, MotorType.kBrushless);
-    spark7 = new CANSparkMax(7, MotorType.kBrushless);
-
-    encoderSPARK = spark7.getEncoder();
-
-
-
-    lift = new SpeedControllerGroup(spark7,spark8);
-
-    leftDrive1 = new VictorSP(0);
-    leftDrive2 = new VictorSP(1);
-    leftTB = new SpeedControllerGroup(leftDrive1,leftDrive2);
-
-    rightDrive1 = new VictorSP(2);
-    rightDrive2 = new VictorSP(3);
-    rightTB = new SpeedControllerGroup(rightDrive1,rightDrive2);
-
-    robotDrive = new DifferentialDrive(leftTB,rightTB);
+      subSystems.add(drivetrain);
+      subSystems.add(lift);
+      subSystems.add(intake);
+      subSystems.add(carriage);
+      subSystems.add(hatch);
+    }catch (Exception e){
+      System.out.println("Error loading subsystems");
+      e.printStackTrace();
     }
-    catch(Exception e){
 
-    e.printStackTrace();
-    }
-//    Compressor c = new Compressor(0);
-//
-//    c.setClosedLoopControl(true);
-    //c.setClosedLoopControl(false);
-
-
-
-//    exampleDouble.set(DoubleSolenoid.Value.kOff);
-//    exampleDouble.set(DoubleSolenoid.Value.kForward);
-//    exampleDouble.set(DoubleSolenoid.Value.kReverse);
-
+    //try/catches involving the driver controls etc
+    //ToDo: fill out controls
 
   }
 
@@ -107,8 +69,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    timer.reset();
-    timer.start();
+
   }
 
   /**
@@ -116,12 +77,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    // Drive for 2 seconds
-    if (timer.get() < 2.0) {
-      robotDrive.arcadeDrive(0.5, 0.0); // drive forwards half speed
-    } else {
-      robotDrive.stopMotor(); // stop robot
-    }
+
   }
 
   /**
@@ -136,56 +92,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    robotDrive.arcadeDrive(stick.getY(), stick.getX());
 
-    if(stick.getRawButton(2)){
-      intake.set(0.7);
-    }
-    else if(stick.getRawButton(1)){
-      intake.set(-.7);
-    }
-    else if(stick.getRawButton(10)){
-      lift.set(1);
-    }
-    else if(stick.getRawButton(9)){
-      lift.set(-0.6);
-    }
-    else if(stick.getRawButton(8)){
-      carriageFlywheel.set(0.3);
-    }
-    else if(stick.getRawButton(7)){
-      carriageFlywheel.set(-0.8);
-    }
-    else if (stick.getRawButton(11)){
-      //intakePivot.set(-0.6);
-      lift.set(-0.2);
-    }
-    else if (stick.getRawButton(12)){
-      //intakePivot.set(0.6);
-      lift.set(0.4);
-    }
-    else if (stick.getRawButton(6)){
-      //hatch.set(DoubleSolenoid.Value.kForward);
+  }
 
-    }
-    else if (stick.getRawButton(5)){
-      //hatch.set(DoubleSolenoid.Value.kReverse);
 
-    }
-    else if (stick.getRawButton(4)){
-      //carriage.set(DoubleSolenoid.Value.kForward);
+  //Accessor methods
+  public Drivetrain getDrivetrain(){return drivetrain;}
 
-    }
-    else if (stick.getRawButton(3)){
-      //carriage.set(DoubleSolenoid.Value.kReverse);
+  public Carriage getCarriage() {
+    return carriage;
+  }
 
-    }
-    else {
-      lift.set(0.03);
-      intake.set(0);
-      intakePivot.set(0);
-      carriageFlywheel.set(0);
-    }
+  public Hatch getHatch() {
+    return hatch;
+  }
+
+  public Intake getIntake() {
+    return intake;
+  }
+
+  public Lift getLift() {
+    return lift;
   }
 
   /**
