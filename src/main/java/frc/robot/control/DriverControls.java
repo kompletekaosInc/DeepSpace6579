@@ -18,8 +18,8 @@ public class DriverControls extends PSController {
 
      */
     private void arcadeDrive(Robot robot){
-        double stickX = controller.getRawAxis(0)/1.15;
-        double stickY = controller.getRawAxis(1)/1.15;
+        double stickX = controller.getRawAxis(0)/1.1;
+        double stickY = controller.getRawAxis(1)/1.1;
 
         robot.getDrivetrain().arcadeDiffDrive(stickX,stickY);
 
