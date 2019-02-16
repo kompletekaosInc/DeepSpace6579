@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift implements SubSystem {
 
-    private static double HOLD_POWER = 0.03;
+    private static final double HOLD_POWER = 0.03;
 
     private CANSparkMax spark7;
     private CANSparkMax spark8;
@@ -20,6 +20,7 @@ public class Lift implements SubSystem {
     //private CANEncoder encoder2;
 
     private static double cmToEncoderValues = 1;
+    private boolean isHolding = false;
 
 
     public Lift(){
@@ -95,7 +96,8 @@ public class Lift implements SubSystem {
      * holds the lift at whatever the current height is
      */
     public void hold(){
-        liftUp(HOLD_POWER);
+        lift.set(HOLD_POWER);
+        isHolding = true;
     }
 
 //ToDo: other lift methods?
@@ -104,6 +106,7 @@ public class Lift implements SubSystem {
     public void publishStats() {
         SmartDashboard.putNumber(("spark8 encoder position: "), encoder1.getPosition());
         SmartDashboard.putNumber("Spark8 encoder velocity: ", encoder1.getVelocity());
+        SmartDashboard.putBoolean("holding",isHolding);
 
     }
 

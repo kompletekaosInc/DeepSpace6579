@@ -1,6 +1,7 @@
 package frc.robot.control;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 //import frc.robot.subsystems.Drivetrain;
 //import frc.robot.subsystems.Drivetrain;
@@ -17,8 +18,8 @@ public class DriverControls extends PSController {
 
      */
     private void arcadeDrive(Robot robot){
-        double stickX = controller.getRawAxis(0);
-        double stickY = controller.getRawAxis(1);
+        double stickX = controller.getRawAxis(0)/1.15;
+        double stickY = controller.getRawAxis(1)/1.15;
 
         robot.getDrivetrain().arcadeDiffDrive(stickX,stickY);
 
@@ -55,7 +56,6 @@ public class DriverControls extends PSController {
     @Override
     protected void processTriangle(Robot robot) {
         //super.processTriangle(robot);
-
         robot.getIntake().out();
     }
 
@@ -63,6 +63,7 @@ public class DriverControls extends PSController {
     protected void processL1(Robot robot) {
         //super.processL1(robot);
         robot.getIntake().in();
+        robot.getCarriage().flywheelIn();
     }
 
     @Override
@@ -103,9 +104,10 @@ public class DriverControls extends PSController {
         robot.getCarriage().launcherIn();
         robot.getCarriage().stop();
         robot.getIntake().stopRollers();
-        robot.getLift().stopLift();
-        robot.getIntake().stopArm();
+        //robot.getLift().stopLift();
+        robot.getIntake().hold();
         robot.getLift().hold();
+
 
     }
 }

@@ -8,11 +8,13 @@ public class Intake implements SubSystem {
     private VictorSP armMotor;
     private VictorSP rollers;
 
-    private static double inSpeed = -0.7;
-    private static double outSpeed = 0.7;
+    private static double inSpeed = -0.5;
+    private static double outSpeed = 0.5;
 
     private static double upSpeed = -0.6;
     private static double downSpeed = 0.6;
+
+    private boolean isUp = true;
 
     /**
      * This constructor assigns the ports for all the motors in the intake subsystem
@@ -29,6 +31,7 @@ public class Intake implements SubSystem {
      */
     public void up(){
         armMotor.set(upSpeed);
+        isUp = true;
     }
 
     /**
@@ -36,6 +39,7 @@ public class Intake implements SubSystem {
      */
     public void down(){
         armMotor.set(downSpeed);
+        isUp = false;
     }
 
     /**
@@ -62,6 +66,14 @@ public class Intake implements SubSystem {
 
     public void stopArm(){
         armMotor.set(0);
+    }
+
+    public void hold(){
+        if (isUp){
+            armMotor.set(-0.05);
+        }else{
+            armMotor.set(0.05);
+        }
     }
 
 

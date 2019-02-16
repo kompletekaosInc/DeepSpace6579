@@ -12,7 +12,10 @@ import frc.robot.control.DriverControls;
 import frc.robot.control.RobotControl;
 import frc.robot.subsystems.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,6 +75,10 @@ public class Robot extends TimedRobot {
       e.printStackTrace();
       throw e;
     }
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    Date date = new Date();
+    System.out.println("robotInit: [build=Jiah:compDay1]" + dateFormat.format(date));
 
     //try/catches involving the driver controls etc
     //ToDo: fill out controls
