@@ -22,6 +22,7 @@ public class OperatorControls extends PSController {
     public void giveCommands(Robot robot) {
         super.giveCommands(robot);
         liftManual(robot);
+        armManual(robot);
 
     }
 
