@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.*;
 import frc.robot.control.DriverControls;
+import frc.robot.control.OperatorControls;
 import frc.robot.control.RobotControl;
 import frc.robot.subsystems.*;
 
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
   private List subSystems = new ArrayList();
 
   private RobotControl robotControl;
+  private RobotControl operatorControl;
   //todo: operator
 
 
@@ -70,6 +72,13 @@ public class Robot extends TimedRobot {
 
     try{
       robotControl = new DriverControls();
+
+    }catch(Exception e ){
+      e.printStackTrace();
+      throw e;
+    }
+    try{
+      operatorControl = new OperatorControls();
 
     }catch(Exception e ){
       e.printStackTrace();
@@ -115,8 +124,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
     if (robotControl != null) {
       robotControl.giveCommands(this);
+    }
+
+    if (operatorControl != null) {
+      operatorControl.giveCommands ( this);
     }
 
     publishSubSystemStats();
