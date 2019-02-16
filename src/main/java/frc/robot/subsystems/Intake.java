@@ -8,8 +8,8 @@ public class Intake implements SubSystem {
     private VictorSP armMotor;
     private VictorSP rollers;
 
-    private static double inSpeed = 0.7;
-    private static double outSpeed = -0.7;
+    private static double inSpeed = -0.7;
+    private static double outSpeed = 0.7;
 
     private static double upSpeed = -0.6;
     private static double downSpeed = 0.6;
@@ -55,11 +55,14 @@ public class Intake implements SubSystem {
     /**
      * sets all powers in the system to 0
      */
-    public void stop(){
+    public void stopRollers(){
         rollers.set(0);
-        armMotor.set(0);
+        //armMotor.set(0);
     }
 
+    public void stopArm(){
+        armMotor.set(0);
+    }
 
 
 

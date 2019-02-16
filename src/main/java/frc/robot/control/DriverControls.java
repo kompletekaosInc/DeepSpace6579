@@ -17,8 +17,8 @@ public class DriverControls extends PSController {
 
      */
     private void arcadeDrive(Robot robot){
-        double stickX = controller.getX(GenericHID.Hand.kLeft);
-        double stickY = controller.getY(GenericHID.Hand.kLeft);
+        double stickX = controller.getRawAxis(0);
+        double stickY = controller.getRawAxis(1);
 
         robot.getDrivetrain().arcadeDiffDrive(stickX,stickY);
 
@@ -31,14 +31,81 @@ public class DriverControls extends PSController {
     @Override
     public void giveCommands(Robot robot) {
         super.giveCommands(robot);
-
         arcadeDrive(robot);
+    }
 
+    @Override
+    protected void processCross(Robot robot) {
+        //super.processCross(robot);
+        robot.getCarriage().launcherOut();
     }
 
     @Override
     protected void processSquare(Robot robot) {
         //super.processSquare(robot);
-        
+        robot.getLift().liftUp(1);
+    }
+
+    @Override
+    protected void processCircle(Robot robot) {
+        //super.processCircle(robot);
+        robot.getLift().liftDown(0.5);
+    }
+
+    @Override
+    protected void processTriangle(Robot robot) {
+        //super.processTriangle(robot);
+
+        robot.getIntake().out();
+    }
+
+    @Override
+    protected void processL1(Robot robot) {
+        //super.processL1(robot);
+        robot.getIntake().in();
+    }
+
+    @Override
+    protected void processR1(Robot robot) {
+        //super.processR1(robot);
+        robot.getCarriage().flywheelSpill();
+    }
+
+    @Override
+    protected void processL2(Robot robot) {
+        //super.processL2(robot);
+        robot.getHatch().shootHatch();
+    }
+
+    @Override
+    protected void processR2(Robot robot) {
+        //super.processR2(robot);
+        robot.getCarriage().flywheelOutHigh();
+    }
+
+    @Override
+    protected void processShare(Robot robot) {
+        //super.processShare(robot);
+
+        robot.getIntake().up();
+    }
+
+    @Override
+    protected void processOptions(Robot robot) {
+        robot.getIntake().down();
+    }
+
+    @Override
+    protected void processNoButtons(Robot robot) {
+        //super.processNoButtons(robot);
+
+        robot.getHatch().retractHatch();
+        robot.getCarriage().launcherIn();
+        robot.getCarriage().stop();
+        robot.getIntake().stopRollers();
+        robot.getLift().stopLift();
+        robot.getIntake().stopArm();
+        robot.getLift().hold();
+
     }
 }

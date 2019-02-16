@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
+import java.util.logging.Logger;
 
 public class Drivetrain implements SubSystem {
 
@@ -18,11 +22,23 @@ public class Drivetrain implements SubSystem {
     // init the drivetrain
     private DifferentialDrive robotDrive = new DifferentialDrive(leftTB, rightTB);
 
-    private Compressor c;
+    private Compressor compressor;
+
+    private UsbCamera camera = null;
+
+    private Logger logger = Logger.getLogger( this.getClass().getName());
+
 
     public Drivetrain(){
-        c = new Compressor(0);
-        c.setClosedLoopControl(true);
+        compressor = new Compressor(0);
+        compressor.setClosedLoopControl(true);
+
+        try {
+            camera = CameraServer.getInstance().startAutomaticCapture();
+        } catch (Exception e) {
+            logger.info("Camera not installed correctly" + e.toString());
+            //SmartDashboard.putBoolean("Camera Installed", false);
+        }
 
 
 

@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 //import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift implements SubSystem {
 
@@ -101,6 +102,8 @@ public class Lift implements SubSystem {
 
     @Override
     public void publishStats() {
+        SmartDashboard.putNumber(("spark8 encoder position: "), encoder1.getPosition());
+        SmartDashboard.putNumber("Spark8 encoder velocity: ", encoder1.getVelocity());
 
     }
 

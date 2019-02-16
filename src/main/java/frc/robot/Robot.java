@@ -8,9 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.*;
+import frc.robot.control.DriverControls;
+import frc.robot.control.RobotControl;
 import frc.robot.subsystems.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -32,6 +35,9 @@ public class Robot extends TimedRobot {
 
   //creating a list of all the subsystems
   private List subSystems = new ArrayList();
+
+  private RobotControl robotControl;
+  //todo: operator
 
 
 
@@ -57,6 +63,14 @@ public class Robot extends TimedRobot {
     }catch (Exception e){
       System.out.println("Error loading subsystems");
       e.printStackTrace();
+    }
+
+    try{
+      robotControl = new DriverControls();
+
+    }catch(Exception e ){
+      e.printStackTrace();
+      throw e;
     }
 
     //try/catches involving the driver controls etc
@@ -86,6 +100,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
 
+
   }
 
   /**
@@ -93,8 +108,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    if (robotControl != null) {
+      robotControl.giveCommands(this);
+    }
 
-  }
+    publishSubSystemStats();
+}
 
 
   //Accessor methods
@@ -114,6 +133,19 @@ public class Robot extends TimedRobot {
 
   public Lift getLift() {
     return lift;
+  }
+
+  public void publishSubSystemStats()
+  {
+    Iterator i = subSystems.iterator();
+    while (i.hasNext())
+    {
+      SubSystem nextSubSystem = (SubSystem) i.next();
+      nextSubSystem.publishStats();
+    }
+
+
+
   }
 
   /**
