@@ -45,6 +45,13 @@ public class Lift implements SubSystem {
     public void liftUp(double power){
         lift.set(power);
     }
+    /**
+     * This drives teh lift up at the designated speed
+     * @param power
+     */
+    public void liftSet(double power){
+        lift.set(power);
+    }
 
     /**
      * Drives the lift down at the specified power
