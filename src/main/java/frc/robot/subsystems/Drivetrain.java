@@ -6,25 +6,32 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.logging.Logger;
 
 public class Drivetrain implements SubSystem {
 
+    private boolean cargoIsFront = true;
+
+
     private VictorSP leftTB1 = new VictorSP(0);
     private VictorSP leftTB2 = new VictorSP(1);
-    private SpeedControllerGroup leftTB = new SpeedControllerGroup(leftTB1, leftTB2);
+    private SpeedControllerGroup toughBox1 = new SpeedControllerGroup(leftTB1, leftTB2);;
+    private SpeedControllerGroup leftTB = toughBox1;  // default startr game toughbox1 is the leftTB
+
 
     private VictorSP rightTB1 = new VictorSP(2);
     private VictorSP rightTB2 = new VictorSP(3);
-    private SpeedControllerGroup rightTB = new SpeedControllerGroup(rightTB1, rightTB2);
+    private SpeedControllerGroup toughBox2 = new SpeedControllerGroup(rightTB1, rightTB2);;
+    private SpeedControllerGroup rightTB = toughBox2;
 
     // init the drivetrain
     private DifferentialDrive robotDrive = new DifferentialDrive(leftTB, rightTB);
 
     private Compressor compressor;
 
-    private UsbCamera camera = null;
+    //private UsbCamera camera1 = null;
 
     private Logger logger = Logger.getLogger( this.getClass().getName());
 
@@ -33,12 +40,12 @@ public class Drivetrain implements SubSystem {
         compressor = new Compressor(0);
         compressor.setClosedLoopControl(true);
 
-        try {
-            camera = CameraServer.getInstance().startAutomaticCapture();
-        } catch (Exception e) {
-            logger.info("Camera not installed correctly" + e.toString());
-            //SmartDashboard.putBoolean("Camera Installed", false);
-        }
+//        try {
+//            camera1 = CameraServer.getInstance().startAutomaticCapture();
+//        } catch (Exception e) {
+//            logger.info("Camera not installed correctly" + e.toString());
+//            //SmartDashboard.putBoolean("Camera Installed", false);
+//        }
 
 
 
@@ -66,10 +73,31 @@ public class Drivetrain implements SubSystem {
 
         //SmartDashboard.getNumber("Stick X: ", stickX);
         //SmartDashboard.getNumber("Stick Y: ", stickY);
-        robotDrive.arcadeDrive(stickY, stickX);
+        if(cargoIsFront) {
+            robotDrive.arcadeDrive(stickY, stickX);
+        } else {
+            robotDrive.arcadeDrive(-stickY, stickX);
+        }
     }
 
+    public void setCargoToFront(){
+        cargoIsFront = true;
 
+    //    leftTB = toughBox1;
+    //    rightTB = toughBox2;
+
+        //robotDrive = new DifferentialDrive(leftTB, rightTB);
+
+    }
+
+    public void setHatchToFront(){
+        cargoIsFront = false;
+
+   //     leftTB = toughBox2;
+   //     rightTB = toughBox1;
+
+        //robotDrive = new DifferentialDrive(leftTB, rightTB);
+    }
 
 
 
@@ -80,7 +108,7 @@ public class Drivetrain implements SubSystem {
     @Override
     public void publishStats() {
         //fill with stats to put on the shuffleboard/smartdash/ etc
-
+        SmartDashboard.putBoolean("cargoIsFront", cargoIsFront);
     }
 
     @Override

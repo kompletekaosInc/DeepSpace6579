@@ -18,8 +18,8 @@ public class DriverControls extends PSController {
 
      */
     private void arcadeDrive(Robot robot){
-        double stickX = controller.getRawAxis(0)/1.1;
-        double stickY = controller.getRawAxis(1)/1.1;
+        double stickX = controller.getRawAxis(0);
+        double stickY = controller.getRawAxis(1);
 
         robot.getDrivetrain().arcadeDiffDrive(stickX,stickY);
 
@@ -84,16 +84,21 @@ public class DriverControls extends PSController {
         robot.getCarriage().flywheelOutHigh();
     }
 
+    //Hatch is front
     @Override
     protected void processShare(Robot robot) {
         //super.processShare(robot);
-
+        robot.getDrivetrain().setCargoToFront();
+      //  SmartDashboard.putString("Which subsystem is at front", "Cargo is the front");
         //robot.getIntake().up();
     }
 
+    //Cargo is front
     @Override
     protected void processOptions(Robot robot) {
         //robot.getIntake().down();
+        robot.getDrivetrain().setHatchToFront();
+      //  SmartDashboard.putString("Which subsystem is at front", "Hatch is the front");
     }
 
     @Override
@@ -103,6 +108,7 @@ public class DriverControls extends PSController {
         robot.getHatch().retractHatch();
         robot.getCarriage().launcherIn();
         robot.getCarriage().stop();
+        //robot.getIntake().hold();
         robot.getIntake().stopRollers();
         //robot.getLift().stopLift();
         //robot.getIntake().hold();

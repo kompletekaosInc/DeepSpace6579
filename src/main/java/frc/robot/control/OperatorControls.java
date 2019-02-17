@@ -21,23 +21,23 @@ public class OperatorControls extends PSController {
     @Override
     public void giveCommands(Robot robot) {
         super.giveCommands(robot);
-        liftManual(robot);
-        armManual(robot);
+//        liftManual(robot);
+//        armManual(robot);
 
     }
 
-    private void liftManual(Robot robot){
-        robot.getLift().liftSet(controller1.getRawAxis(1));
-    }
-    private void armManual(Robot robot){
-        //robot.getIntake().(controller1.getRawAxis(1));
-        if (controller1.getRawAxis(5)>=0){
-            robot.getIntake().up();
-        }
-        else{
-            robot.getIntake().down();
-        }
-    }
+//    private void liftManual(Robot robot){
+//        robot.getLift().liftSet(controller1.getRawAxis(1));
+//    }
+//    private void armManual(Robot robot){
+//        //robot.getIntake().(controller1.getRawAxis(1));
+//        if (controller1.getRawAxis(5)>=0){
+//            robot.getIntake().up();
+//        }
+//        else{
+//            robot.getIntake().down();
+//        }
+//    }
 
     @Override
     protected void processCross(Robot robot) {
@@ -61,22 +61,22 @@ public class OperatorControls extends PSController {
 
     @Override
     protected void processL1(Robot robot) {
-
+        robot.getIntake().up();
     }
 
     @Override
     protected void processR1(Robot robot) {
-
+        robot.getIntake().down();
     }
 
     @Override
     protected void processL2(Robot robot) {
-
+        robot.getLift().liftUp(1);
     }
 
     @Override
     protected void processR2(Robot robot) {
-
+        robot.getLift().liftDown(0.4);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class OperatorControls extends PSController {
 
     @Override
     protected void processNoButtons(Robot robot) {
-        robot.getIntake().hold();
+        robot.getIntake().stopArm();
         robot.getLift().hold();
     }
 }

@@ -11,6 +11,7 @@ public class Lift implements SubSystem {
 
     private static final double HOLD_POWER = 0.03;
 
+
     private CANSparkMax spark7;
     private CANSparkMax spark8;
 

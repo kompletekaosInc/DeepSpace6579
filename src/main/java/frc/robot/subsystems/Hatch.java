@@ -13,7 +13,7 @@ public class Hatch implements SubSystem {
 
         shooter = new DoubleSolenoid(0,1);
         //bottomShooter = new DoubleSolenoid(2,3);
-        shooter.set(DoubleSolenoid.Value.kOff);
+        //shooter.set(DoubleSolenoid.Value.kOff);
     }
 
     /**
